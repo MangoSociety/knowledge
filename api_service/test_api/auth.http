@@ -1,0 +1,45 @@
+### Auth
+
+POST http://localhost:10000/api/auth
+Content-Type: application/json
+
+{
+  "email": "858683@gmail.com",
+  "password": "12345"
+}
+
+> {%
+    client.global.set("auth_token", response.body.token)
+    client.global.set("refresh_token", response.body.refresh_token)
+%}
+
+### Signup
+
+POST http://localhost:10000/api/signup
+Content-Type: application/json
+
+{
+  "email": "858683@gmail.com",
+  "password": "12345",
+  "repeat_password": "12345"
+}
+
+> {%
+    client.global.set("auth_token", response.body.token)
+    client.global.set("refresh_token", response.body.refresh_token)
+%}
+
+### Refresh token
+
+PUT http://localhost:8080/api/auth
+Content-Type: application/json
+
+{
+  "refresh_token": "{{refresh_token}}"
+}
+
+> {%
+    client.global.set("auth_token", response.body.token)
+    client.global.set("refresh_token", response.body.refresh_token)
+%}
+

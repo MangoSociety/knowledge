@@ -1,10 +1,11 @@
 package jwt
 
 import (
+	"api_service/internal/config"
+	"api_service/pkg/logging"
 	"context"
 	"encoding/json"
-	"knowledge/api_service/internal/config"
-	"knowledge/api_service/pkg/logging"
+	"github.com/cristalhq/jwt/v3"
 	"net/http"
 	"strings"
 	"time"

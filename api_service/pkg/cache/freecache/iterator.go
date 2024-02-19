@@ -1,8 +1,8 @@
 package freecache
 
 import (
+	"api_service/pkg/cache"
 	"github.com/coocood/freecache"
-	"knowledge/api_service/pkg/cache"
 )
 
 type iterator struct {

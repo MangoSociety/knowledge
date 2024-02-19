@@ -1,10 +1,12 @@
 package auth
 
 import (
+	"api_service/internal/apperror"
+	"api_service/internal/client/user_service"
+	"api_service/pkg/jwt"
+	"api_service/pkg/logging"
 	"encoding/json"
 	"github.com/julienschmidt/httprouter"
-	"knowledge/api_service/pkg/jwt"
-	"knowledge/api_service/pkg/logging"
 	"net/http"
 )
 
@@ -15,23 +17,23 @@ const (
 
 type Handler struct {
 	Logger      logging.Logger
-	UserService user_service2.UserService
+	UserService user_service.UserService
 	JWTHelper   jwt.Helper
 }
 
 func (h *Handler) Register(router *httprouter.Router) {
-	router.HandlerFunc(http.MethodPost, authURL, apperror2.Middleware(h.Auth))
-	router.HandlerFunc(http.MethodPut, authURL, apperror2.Middleware(h.Auth))
-	router.HandlerFunc(http.MethodPost, signupURL, apperror2.Middleware(h.Signup))
+	router.HandlerFunc(http.MethodPost, authURL, apperror.Middleware(h.Auth))
+	router.HandlerFunc(http.MethodPut, authURL, apperror.Middleware(h.Auth))
+	router.HandlerFunc(http.MethodPost, signupURL, apperror.Middleware(h.Signup))
 }
 
 func (h *Handler) Signup(w http.ResponseWriter, r *http.Request) error {
 	w.Header().Set("Content-Type", "application/json")
 
 	defer r.Body.Close()
-	var dto user_service2.CreateUserDTO
+	var dto user_service.CreateUserDTO
 	if err := json.NewDecoder(r.Body).Decode(&dto); err != nil {
-		return apperror2.BadRequestError("failed to decode data")
+		return apperror.BadRequestError("failed to decode data")
 	}
 
 	u, err := h.UserService.Create(r.Context(), dto)
@@ -57,9 +59,9 @@ func (h *Handler) Auth(w http.ResponseWriter, r *http.Request) error {
 	switch r.Method {
 	case http.MethodPost:
 		defer r.Body.Close()
-		var dto user_service2.SigninUserDTO
+		var dto user_service.SigninUserDTO
 		if err := json.NewDecoder(r.Body).Decode(&dto); err != nil {
-			return apperror2.BadRequestError("failed to decode data")
+			return apperror.BadRequestError("failed to decode data")
 		}
 		u, err := h.UserService.GetByEmailAndPassword(r.Context(), dto.Email, dto.Password)
 		if err != nil {
@@ -73,7 +75,7 @@ func (h *Handler) Auth(w http.ResponseWriter, r *http.Request) error {
 		defer r.Body.Close()
 		var rt jwt.RT
 		if err := json.NewDecoder(r.Body).Decode(&rt); err != nil {
-			return apperror2.BadRequestError("failed to decode data")
+			return apperror.BadRequestError("failed to decode data")
 		}
 		token, err = h.JWTHelper.UpdateRefreshToken(rt)
 		if err != nil {

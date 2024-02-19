@@ -1,8 +1,8 @@
 package freecache
 
 import (
+	"api_service/pkg/cache"
 	"github.com/coocood/freecache"
-	cache2 "knowledge/api_service/pkg/cache"
 	"sync"
 )
 
@@ -32,11 +32,11 @@ func (r *repository) MissCount() int64 {
 	return r.cache.MissCount()
 }
 
-func NewCacheRepo(size int) cache2.Repository {
+func NewCacheRepo(size int) cache.Repository {
 	return &repository{cache: freecache.NewCache(size)}
 }
 
-func (r *repository) GetIterator() cache2.Iterator {
+func (r *repository) GetIterator() cache.Iterator {
 	return &iterator{r.cache.NewIterator()}
 }
 

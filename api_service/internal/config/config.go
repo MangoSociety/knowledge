@@ -1,8 +1,8 @@
 package config
 
 import (
+	"api_service/pkg/logging"
 	"github.com/ilyakaznacheev/cleanenv"
-	"knowledge/api_service/pkg/logging"
 	"sync"
 )
 

@@ -1,12 +1,13 @@
 package jwt
 
 import (
+	"api_service/internal/client/user_service"
+	"api_service/internal/config"
+	"api_service/pkg/cache"
+	"api_service/pkg/logging"
 	"encoding/json"
+	"github.com/cristalhq/jwt/v3"
 	"github.com/google/uuid"
-	"knowledge/api_service/internal/client/user_service"
-	"knowledge/api_service/internal/config"
-	"knowledge/api_service/pkg/cache"
-	"knowledge/api_service/pkg/logging"
 	"time"
 )
 

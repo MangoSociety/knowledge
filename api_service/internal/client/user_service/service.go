@@ -1,14 +1,14 @@
 package user_service
 
 import (
+	"api_service/internal/apperror"
+	"api_service/pkg/logging"
+	"api_service/pkg/rest"
 	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/fatih/structs"
-	"knowledge/api_service/internal/apperror"
-	"knowledge/api_service/pkg/logging"
-	rest2 "knowledge/api_service/pkg/rest"
 	"net/http"
 	"strings"
 	"time"
@@ -17,14 +17,14 @@ import (
 var _ UserService = &client{}
 
 type client struct {
-	base     rest2.BaseClient
+	base     rest.BaseClient
 	Resource string
 }
 
 func NewService(baseURL string, resource string, logger logging.Logger) UserService {
 	c := client{
 		Resource: resource,
-		base: rest2.BaseClient{
+		base: rest.BaseClient{
 			BaseURL: baseURL,
 			HTTPClient: &http.Client{
 				Timeout: 10 * time.Second,
@@ -45,7 +45,7 @@ type UserService interface {
 
 func (c *client) GetByEmailAndPassword(ctx context.Context, email, password string) (u User, err error) {
 	c.base.Logger.Debug("add email and password to filter options")
-	filters := []rest2.FilterOptions{
+	filters := []rest.FilterOptions{
 		{
 			Field:  "email",
 			Values: []string{email},

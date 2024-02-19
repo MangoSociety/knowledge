@@ -1,10 +1,10 @@
 package rest
 
 import (
+	"api_service/pkg/logging"
 	"encoding/json"
 	"errors"
 	"fmt"
-	"knowledge/api_service/pkg/logging"
 	"net/http"
 	"net/url"
 	"path"
